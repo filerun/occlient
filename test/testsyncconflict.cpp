@@ -306,12 +306,19 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("A/really-a-conflict")); // doesn't look like a conflict, but headers say it is
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
         conflictRecord = fakeFolder.syncJournal().conflictRecord("A/really-a-conflict");
-        QVERIFY(conflictRecord.isValid());
-        QCOMPARE(conflictRecord.baseFileId, a2FileId);
-        QCOMPARE(conflictRecord.baseModtime, 1234);
-        QCOMPARE(conflictRecord.baseEtag, QByteArray("etag"));
-        QCOMPARE(conflictRecord.initialBasePath, QByteArray("A/original"));
+
+        if (filesAreDehydrated) {
+            // A placeholder for the conflicting file is created, but no actual GET request is made, so there should be no conflict record
+            QVERIFY(!conflictRecord.isValid());
+        } else {
+            QVERIFY(conflictRecord.isValid());
+            QCOMPARE(conflictRecord.baseFileId, a2FileId);
+            QCOMPARE(conflictRecord.baseModtime, 1234);
+            QCOMPARE(conflictRecord.baseEtag, QByteArray("etag"));
+            QCOMPARE(conflictRecord.initialBasePath, QByteArray("A/original"));
+        }
     }
 
     // Check that conflict records are removed when the file is gone
@@ -649,6 +656,10 @@ private slots:
         QFETCH_GLOBAL(Vfs::Mode, vfsMode);
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
+        if (filesAreDehydrated) {
+            QSKIP("Known bug: https://github.com/owncloud/client/issues/10223");
+        }
+
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         ItemCompletedSpy completeSpy(fakeFolder);
 
@@ -678,8 +689,9 @@ private slots:
         const auto &conflicts = findConflicts(fakeFolder.currentLocalState());
         QVERIFY(conflicts.size() == 1);
         QVERIFY(conflicts[0].contains("A (conflicted copy"));
-        for (const auto &conflict : conflicts)
+        for (const auto &conflict : conflicts) {
             QDir(fakeFolder.localPath() + conflict).removeRecursively();
+        }
 
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());

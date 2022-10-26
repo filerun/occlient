@@ -226,13 +226,14 @@ private slots:
         if (vfsMode == Vfs::Off) {
             QCOMPARE(counter.nGET, 0); // b2m is detected as a *new* file, so we don't need to fetch the contents
             QCOMPARE(counter.nMOVE, 0); // content differs, so not a move
+            QCOMPARE(counter.nPUT, 1); // upload b2m
+            QCOMPARE(counter.nDELETE, 1); // delete b2
         } else {
-            // with winvfs, we don't implement the CF_CALLBACK_TYPE_NOTIFY_RENAME callback, so:
-            QCOMPARE(counter.nGET, 1); // callback to get the metadata/contents of b2m
-            QCOMPARE(counter.nMOVE, 0); // no callback, contents differ, so not a move
+            QCOMPARE(counter.nGET, 1); // callback to get the (newly modified!) metadata/contents of b2m
+            QCOMPARE(counter.nMOVE, 1); // contents are the same, so it's a move
+            QCOMPARE(counter.nPUT, 0); // we detected a move, so no upload, and ...
+            QCOMPARE(counter.nDELETE, 0); // ... no delete
         }
-        QCOMPARE(counter.nPUT, 1); // upload b2m
-        QCOMPARE(counter.nDELETE, 1); // delete b2
         counter.reset();
 
         // WinVFS handles this just fine.
