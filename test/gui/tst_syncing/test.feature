@@ -63,7 +63,7 @@ Feature: Syncing files
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
-        When the user selects configure_synchronization_manually option in advanced section
+        When the user selects manual sync folder option in advanced section
         And the user "Alice" clicks on the next button in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         Then the sync all checkbox should be checked
@@ -77,7 +77,7 @@ Feature: Syncing files
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
-        When the user selects configure_synchronization_manually option in advanced section
+        When the user selects manual sync folder option in advanced section
         And the user "Alice" clicks on the next button in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user selects the following folders to sync:
