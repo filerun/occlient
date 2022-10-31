@@ -15,12 +15,6 @@ class AccountConnectionWizard:
         names.localDirectoryGroupBox_chooseLocalDirectoryButton_QToolButton
     )
     CHOOSE_BUTTON = names.qFileDialog_Choose_QPushButton
-    FINISH_BUTTON = {
-        "name": "qt_wizard_finish",
-        "type": "QPushButton",
-        "visible": 1,
-        "window": names.owncloudWizard_OCC_OwncloudWizard,
-    }
     ERROR_LABEL = {
         "name": "errorMessageLabel",
         "type": "QLabel",
@@ -40,19 +34,6 @@ class AccountConnectionWizard:
         "visible": 1,
         "container": names.setupWizardWindow_contentWidget_QStackedWidget,
     }
-    MANUAL_SYNC_FOLDER_OPTION = {
-        "name": "rManualFolder",
-        "type": "QRadioButton",
-        "visible": 1,
-        "window": names.owncloudWizard_OCC_OwncloudWizard,
-    }
-    CHOOSE_WHAT_TO_SYNC_BUTTON = {
-        "name": "bSelectiveSync",
-        "type": "QPushButton",
-        "visible": 1,
-        "window": names.owncloudWizard_OCC_OwncloudWizard,
-    }
-    SELECTIVE_SYNC_DIALOG = names.choose_What_to_Sync_OCC_SelectiveSyncDialog
     CONF_SYNC_MANUALLY_RADIO_BUTTON = (
         names.syncModeGroupBox_configureSyncManuallyRadioButton_QRadioButton
     )
@@ -116,7 +97,7 @@ class AccountConnectionWizard:
         )
         squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))
 
-    def finishSetup(self):
+    def nextStep(self):
         squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))
 
     def selectSyncFolder(self, context):
@@ -135,12 +116,21 @@ class AccountConnectionWizard:
 
     def addAccount(self, context):
         self.addAccountCredential(context)
-        self.finishSetup()
+        self.nextStep()
 
     def addAccountCredential(self, context):
         self.addServer(context)
         self.addUserCreds(context)
         self.selectSyncFolder(context)
 
-    def selectManualSyncFolder(self):
+    def selectManualSyncFolderOption(self):
         squish.clickButton(squish.waitForObject(self.CONF_SYNC_MANUALLY_RADIO_BUTTON))
+
+    def selectVirtualFileOption(self):
+        squish.clickButton(squish.waitForObject(self.VIRTUAL_FILE_RADIO_BUTTON))
+    
+    def confirmEnableExperimentalVFSOption(self):
+        squish.clickButton(squish.waitForObject(self.ENABLE_EXPERIMENTAL_FEATURE_BUTTON))
+    
+    def cancelEnableExperimentalVFSOption(self):
+        squish.clickButton(squish.waitForObject(self.STAY_SAFE_BUTTON))

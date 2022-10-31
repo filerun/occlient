@@ -1330,8 +1330,8 @@ def step(context):
 @When('the user selects manual sync folder option in advanced section')
 def step(context):
     newAccount = AccountConnectionWizard()
-    newAccount.selectManualSyncFolder()
-    newAccount.finishSetup()
+    newAccount.selectManualSyncFolderOption()
+    newAccount.nextStep()
 
 
 @When('the user connects the account')
@@ -1528,14 +1528,14 @@ def step(context, folderName):
 @When('the user selects vfs option in advanced section')
 def step(context):
     newAccount = AccountConnectionWizard()
-    clickButton(waitForObject(newAccount.VIRTUAL_FILE_RADIO_BUTTON))
+    newAccount.selectVFSOption()
 
 
 @When(r'^the user (confirms|cancels) the enable experimental vfs option$', regexp=True)
 def step(context, action):
     newAccount = AccountConnectionWizard()
     if action == "confirms":
-        clickButton(waitForObject(newAccount.ENABLE_EXPERIMENTAL_FEATURE_BUTTON))
+        newAccount.confirmEnableExperimentalVFSOption()
     else:
-        clickButton(waitForObject(newAccount.STAY_SAFE_BUTTON))
-    clickButton(waitForObject(newAccount.NEXT_BUTTON))
+        newAccount.cancelEnableExperimentalVFSOption()
+    newAccount.nextStep()
