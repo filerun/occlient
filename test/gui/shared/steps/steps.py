@@ -1352,19 +1352,19 @@ def step(context, headerText):
 
 @Then('the sync all checkbox should be checked')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    state = waitForObject(newAccount.SYNC_DIALOG_ROOT_FOLDER)["checkState"]
+    syncConnection = SyncConnectionWizard()
+    state = waitForObject(syncConnection.SYNC_DIALOG_ROOT_FOLDER)["checkState"]
     test.compare("checked", state, "Sync all checkbox is checked")
 
 
 @Then("the folders should be in the following order:")
 def step(context):
-    newAccount = AccountConnectionWizard()
+    syncConnection = SyncConnectionWizard()
     rowIndex = 0
     for row in context.table[1:]:
         FOLDER_TREE_ROW = {
             "row": rowIndex,
-            "container": newAccount.SYNC_DIALOG_ROOT_FOLDER,
+            "container": syncConnection.SYNC_DIALOG_ROOT_FOLDER,
             "type": "QModelIndex",
         }
         expectedFolder = row[0]
@@ -1516,7 +1516,7 @@ def step(context):
 @When('the user sets the sync path in sync connection wizard')
 def step(context):
     syncConnection = SyncConnectionWizard()
-    syncConnection.setSyncPathInSyncConnectionWizard()
+    syncConnection.setSyncPathInSyncConnectionWizard(context)
 
 
 @When('the user selects "|any|" as a remote destination folder')

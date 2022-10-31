@@ -126,7 +126,7 @@ class AccountConnectionWizard:
     def selectManualSyncFolderOption(self):
         squish.clickButton(squish.waitForObject(self.CONF_SYNC_MANUALLY_RADIO_BUTTON))
 
-    def selectVirtualFileOption(self):
+    def selectVFSOption(self):
         squish.clickButton(squish.waitForObject(self.VIRTUAL_FILE_RADIO_BUTTON))
 
     def confirmEnableExperimentalVFSOption(self):
