@@ -13,6 +13,7 @@ import shutil
 
 from objectmaphelper import RegularExpression
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
+from pageObjects.SyncConnectionWizard import SyncConnectionWizard
 from helpers.SetupClientHelper import *
 from helpers.FilesHelper import buildConflictedRegex
 from pageObjects.EnterPassword import EnterPassword
@@ -1321,9 +1322,9 @@ def step(context):
 
 @When('the user selects the following folders to sync:')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.selectFoldersToSync(context)
-    clickButton(waitForObject(newAccount.ADD_SYNC_CONNECTION_BUTTON))
+    syncConnection = SyncConnectionWizard()
+    syncConnection.selectFoldersToSync(context)
+    syncConnection.addSyncConnection()
 
 
 @When('the user selects manual sync folder option in advanced section')
@@ -1343,20 +1344,10 @@ def step(context):
 def step(context, headerText):
     headerText = headerText.capitalize()
     if headerText in ["Size", "Name"]:
-        newAccount = AccountConnectionWizard()
-        newAccount.sortBy(headerText)
+        syncConnection = SyncConnectionWizard()
+        syncConnection.sortBy(headerText)
     else:
         raise Exception("Sorting by '" + headerText + "' is not supported.")
-
-
-@Then('the dialog chose_what_to_sync should be visible')
-def step(context):
-    newAccount = AccountConnectionWizard()
-    test.compare(
-        waitForObjectExists(newAccount.SELECTIVE_SYNC_DIALOG).visible,
-        True,
-        "Assert selective sync dialog is visible",
-    )
 
 
 @Then('the sync all checkbox should be checked')
@@ -1522,21 +1513,16 @@ def step(context):
     waitForObject(AccountConnectionWizard.CREDENTIAL_PAGE)
 
 
-@When('the user "|any|" clicks on the next button in sync connection wizard')
-def step(context, userName):
-    newAccount = AccountConnectionWizard()
-    waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
-    syncPath = createUserSyncPath(context, userName)
-    type(newAccount.CHOOSE_LOCAL_SYNC_FOLDER, syncPath)
-    clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
+@When('the user sets the sync path in sync connection wizard')
+def step(context):
+    syncConnection = SyncConnectionWizard()
+    syncConnection.setSyncPathInSyncConnectionWizard()
 
 
 @When('the user selects "|any|" as a remote destination folder')
 def step(context, folderName):
-    newAccount = AccountConnectionWizard()
-    waitForObject(newAccount.SELECT_REMOTE_DESTINATION_FOLDER_WIZARD)
-    newAccount.selectARootSyncDirectory(folderName)
-    clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
+    syncConnection = SyncConnectionWizard()
+    syncConnection.selectRemoteDestinationFolder(folderName)
 
 
 @When('the user selects vfs option in advanced section')
