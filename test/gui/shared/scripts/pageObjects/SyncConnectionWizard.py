@@ -39,11 +39,15 @@ class SyncConnectionWizard:
 
     def setSyncPathInSyncConnectionWizard(self, context):
         squish.waitForObject(self.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
-        squish.type(self.CHOOSE_LOCAL_SYNC_FOLDER, context.userData['currentUserSyncPath'])
+        squish.type(
+            self.CHOOSE_LOCAL_SYNC_FOLDER, context.userData['currentUserSyncPath']
+        )
         self.nexStep()
 
     def nexStep(self):
-        squish.clickButton(squish.waitForObject(self.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
+        squish.clickButton(
+            squish.waitForObject(self.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON)
+        )
 
     def selectRemoteDestinationFolder(self, folder):
         squish.waitForObject(self.SELECT_REMOTE_DESTINATION_FOLDER_WIZARD)

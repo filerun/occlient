@@ -128,9 +128,11 @@ class AccountConnectionWizard:
 
     def selectVirtualFileOption(self):
         squish.clickButton(squish.waitForObject(self.VIRTUAL_FILE_RADIO_BUTTON))
-    
+
     def confirmEnableExperimentalVFSOption(self):
-        squish.clickButton(squish.waitForObject(self.ENABLE_EXPERIMENTAL_FEATURE_BUTTON))
-    
+        squish.clickButton(
+            squish.waitForObject(self.ENABLE_EXPERIMENTAL_FEATURE_BUTTON)
+        )
+
     def cancelEnableExperimentalVFSOption(self):
         squish.clickButton(squish.waitForObject(self.STAY_SAFE_BUTTON))
