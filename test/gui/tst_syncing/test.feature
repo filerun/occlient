@@ -86,7 +86,7 @@ Feature: Syncing files
         Then the folder "simple-folder" should exist on the file system
         But the folder "large-folder" should not exist on the file system
 
-    @skip @issue-9733
+    @issue-9733
     Scenario: sort folders list by name and size
         Given user "Alice" has created folder "123Folder" on the server
         And user "Alice" has uploaded file on the server with content "small" to "123Folder/lorem.txt"
@@ -98,7 +98,9 @@ Feature: Syncing files
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
-        When the user opens chose_what_to_sync dialog
+        When the user selects manual sync folder option in advanced section
+        And the user "Alice" clicks on the next button in sync connection wizard
+        And the user selects "ownCloud" as a remote destination folder
         # folders are sorted by name in ascending order by default
         Then the folders should be in the following order:
             | folder    |

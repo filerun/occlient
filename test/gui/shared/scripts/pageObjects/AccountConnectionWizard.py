@@ -202,7 +202,7 @@ class AccountConnectionWizard:
         squish.mouseClick(
             squish.waitForObject(
                 {
-                    "container": names.deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView,
+                    "container": names.deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView_2,
                     "text": headerText,
                     "type": "HeaderViewItem",
                     "visible": True,
